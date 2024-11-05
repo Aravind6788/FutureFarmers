@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Land Details - Future Farmers</title>
+
+    <!-- Include all your existing CSS links -->
+    <link rel="preconnect" href="https://fonts.googleapis.com/">
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&amp;display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Amatic+SC:wght@400;700&amp;display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="/vendors/bootstrap/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="/vendors/animate/animate.min.css" />
+    <link rel="stylesheet" href="/vendors/animate/custom-animate.css" />
+    <link rel="stylesheet" href="/vendors/fontawesome/css/all.min.css" />
+    <link rel="stylesheet" href="/vendors/jarallax/jarallax.css" />
+    <link rel="stylesheet" href="/vendors/jquery-magnific-popup/jquery.magnific-popup.css" />
+    <link rel="stylesheet" href="/vendors/nouislider/nouislider.min.css" />
+    <link rel="stylesheet" href="/vendors/nouislider/nouislider.pips.css" />
+    <link rel="stylesheet" href="/vendors/odometer/odometer.min.css" />
+    <link rel="stylesheet" href="/vendors/swiper/swiper.min.css" />
+    <link rel="stylesheet" href="/vendors/agrion-icons/style.css">
+    <link rel="stylesheet" href="/vendors/tiny-slider/tiny-slider.min.css" />
+    <link rel="stylesheet" href="/vendors/reey-font/stylesheet.css" />
+    <link rel="stylesheet" href="/vendors/owl-carousel/owl.carousel.min.css" />
+    <link rel="stylesheet" href="/vendors/owl-carousel/owl.theme.default.min.css" />
+    <link rel="stylesheet" href="/vendors/bootstrap-select/css/bootstrap-select.min.css" />
+    <link rel="stylesheet" href="/vendors/vegas/vegas.min.css" />
+    <link rel="stylesheet" href="/vendors/jquery-ui/jquery-ui.css" />
+    <link rel="stylesheet" href="/vendors/timepicker/timePicker.css" />
+    <link rel="stylesheet" href="/css/agrion.css" />
+    <link rel="stylesheet" href="/css/agrion-responsive.css" />
+
+    <style>
+        .suggestion-section {
+    background-color: #e6f7ff;
+    padding: 25px;
+    border-radius: 12px;
+    margin-top: 30px;
+    border: 1px solid #b3e0ff;
+}
+
+.suggestion-section h3 {
+    color: var(--agrion-primary);
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.suggestion-content {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.suggestion-card {
+    flex: 1;
+    background-color: white;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.suggestion-card h4 {
+    color: var(--agrion-primary);
+    margin-bottom: 10px;
+}
+
+@media (max-width: 768px) {
+    .suggestion-content {
+        flex-direction: column;
+    }
+}
+        .land-detail-container {
+            max-width: 1000px;
+            margin: 50px auto;
+            padding: 30px;
+            background-color: #fff;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            border-radius: 15px;
+        }
+
+        .land-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .land-header h1 {
+            color: var(--agrion-primary);
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .land-image-container {
+            position: relative;
+            width: 100%;
+            height: 400px;
+            overflow: hidden;
+            border-radius: 12px;
+            margin-bottom: 30px;
+        }
+
+        .land-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .land-image:hover {
+            transform: scale(1.05);
+        }
+
+        .details-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .detail-card {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            transition: transform 0.3s ease;
+        }
+
+        .detail-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .detail-label {
+            font-weight: bold;
+            color: var(--agrion-primary);
+            margin-bottom: 8px;
+            font-size: 1.1rem;
+        }
+
+        .detail-value {
+            color: #555;
+            font-size: 1.05rem;
+            line-height: 1.6;
+        }
+
+        .owner-section {
+            background-color: #f0f8ff;
+            padding: 25px;
+            border-radius: 12px;
+            margin-top: 30px;
+            border: 1px solid #e0e0e0;
+        }
+
+        .owner-section h3 {
+            color: var(--agrion-primary);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .actions-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .action-button {
+            display: inline-block;
+            padding: 12px 25px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .back-button {
+            background-color: var(--agrion-primary);
+            color: white;
+        }
+
+        .back-button:hover {
+            background-color: #0056b3;
+            transform: translateY(-2px);
+        }
+
+        .contact-button {
+            background-color: #28a745;
+            color: white;
+        }
+
+        .contact-button:hover {
+            background-color: #218838;
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 768px) {
+            .details-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .land-detail-container {
+                margin: 20px;
+                padding: 20px;
+            }
+
+            .land-image-container {
+                height: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Include your header -->
+    <header class="main-header">
+        <!-- Your existing header content -->
+    </header>
+
+    <div class="land-detail-container">
+        <div class="land-header">
+            <h1>Land Details</h1>
+            <p>Posted by: <%= land.user ? land.user.name : 'Unknown User' %></p>
+        </div>
+
+        <div class="land-image-container">
+            <img class="land-image" src="/land/<%= land._id %>/image" alt="Land Image">
+        </div>
+
+        <div class="details-grid">
+            <div class="detail-card">
+                <div class="detail-label">Size</div>
+                <div class="detail-value"><%= land.size %> acres</div>
+            </div>
+
+            <div class="detail-card">
+                <div class="detail-label">Lease Price</div>
+                <div class="detail-value">₹<%= land.leasePrice %></div>
+            </div>
+
+            <div class="detail-card">
+                <div class="detail-label">Irrigation Facilities</div>
+                <div class="detail-value"><%= land.irrigationFacilities %></div>
+            </div>
+
+            <div class="detail-card">
+                <div class="detail-label">Soil Type</div> <div class="detail-value"><%= land.soilType %></div>
+            </div>
+
+            <div class="detail-card">
+                <div class="detail-label">Land Type</div>
+                <div class="detail-value"><%= land.landType %></div>
+            </div>
+
+            <div class="detail-card">
+                <div class="detail-label">District</div>
+                <div class="detail-value"><%= land.district %></div>
+            </div>
+        </div>
+
+        <div class="owner-section">
+            <h3>Owner Information</h3>
+            <div class="detail-label">Owner Name</div>
+            <div class="detail-value"><%= land.ownerName %></div>
+
+            <div class="detail-label">Phone Number</div>
+            <div class="detail-value"><%= land.phoneNumber %></div>
+
+            <div class="detail-label">Address</div>
+            <div class="detail-value"><%= land.address %></div>
+        </div>
+        <div class="suggestion-section">
+    <h3>AI-Powered Suggestions</h3>
+    <div class="suggestion-content">
+        <div class="suggestion-card">
+            <h4>Recommended Crops</h4>
+            <p id="cropSuggestions">Loading...</p>
+        </div>
+        <div class="suggestion-card">
+            <h4>Recommended Fertilizers</h4>
+            <p id="fertilizerSuggestions">Loading...</p>
+        </div>
+    </div>
+</div>
+        <div class="actions-container">
+            <a href="/land-posts" class="action-button back-button">Back to All Lands</a>
+            <a href="tel:<%= land.phoneNumber %>" class="action-button contact-button">Contact Owner</a>
+        </div>
+    </div>
+
+    <!-- Include your footer -->
+    <footer class="site-footer">
+  <div class="site-footer__top">
+      <div class="container">
+          <div class="site-footer__top-inner">
+              <div class="site-footer-shape-1 float-bob-x"
+                  style="background-image: url(assets/images/shapes/site-footer-shape-1.png);"></div>
+              <div class="row">
+                  <div class="col-xl-3 col-lg-6 col-md-6 wow fadeInUp" data-wow-delay="100ms">
+                      <div class="footer-widget__column footer-widget__about">
+                          <div class="footer-widget__logo">
+                              <a href="/home"><img src="/images/future_farmers-removebg-preview.png"style="height: 200px; width: 200px; background-color:white;border-radius:100px"
+                                      alt=""></a>
+                          </div>
+                          <div class="footer-widget__about-text-box">
+                              <p class="footer-widget__about-text">Here at future farmers,we see the value in everyone.</p>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="col-xl-2 col-lg-6 col-md-6 wow fadeInUp" data-wow-delay="200ms">
+                      <div class="footer-widget__column footer-widget__Explore">
+                          <div class="footer-widget__title-box">
+                              <h3 class="footer-widget__title">Explore</h3>
+                          </div>
+                          <ul class="footer-widget__Explore-list list-unstyled">
+                              <li><a href="/home">Home</a></li>
+                              <li><a href="/post">Post a Querry</a></li>
+                              <li><a href="/posts">View Posts</a></li>
+                              <li><a href="/land">Post Lands</a></li>
+                              <li><a href="/land-posts"> View Lands</a></li>
+                          </ul>
+                      </div>
+                  </div>
+                  <div class="col-xl-3 col-lg-6 col-md-6 wow fadeInUp" data-wow-delay="300ms">
+                      <div class="footer-widget__column footer-widget__news">
+                          <div class="footer-widget__title-box">
+                              <h3 class="footer-widget__title">News</h3>
+                          </div>
+                          <ul class="footer-widget__news-list list-unstyled">
+                              <li>
+                                  <div class="footer-widget__news-img">
+                                      <img src="assets/images/resources/footer-widget-news-img-1.jpg" alt="">
+                                  </div>
+                                  <div class="footer-widget__news-content">
+                                      <p class="footer-widget__news-date">01 Nov,2023</p>
+                                      <h5 class="footer-widget__news-sub-title"><a href="blog-details.html">A
+                                              Organic Food
+                                              Gives
+                                              More Good Taste</a></h5>
+                                  </div>
+                              </li>
+                              <li>
+                                  <div class="footer-widget__news-img">
+                                      <img src="assets/images/resources/footer-widget-news-img-2.jpg" alt="">
+                                  </div>
+                                  <div class="footer-widget__news-content">
+                                      <p class="footer-widget__news-date">03 Nov,2023</p>
+                                      <h5 class="footer-widget__news-sub-title"><a href="blog-details.html">A
+                                              Organic Food
+                                              Gives
+                                              More Good Taste</a></h5>
+                                  </div>
+                              </li>
+                          </ul>
+                      </div>
+                  </div>
+                  <div class="col-xl-4 col-lg-6 col-md-6 wow fadeInUp" data-wow-delay="400ms">
+                      <div class="footer-widget__column footer-widget__Contact">
+                          <div class="footer-widget__title-box">
+                              <h3 class="footer-widget__title">Contact</h3>
+                          </div>
+                          <ul class="footer-widget__Contact-list list-unstyled">
+                              <li>
+                                  <div class="icon">
+                                      <span class="fas fa-phone-square-alt"></span>
+                                  </div>
+                                  <div class="text">
+                                      <p><a href="tel:+918610175112">+918610175112</a></p>
+                                  </div>
+                              </li>
+                              <li>
+                                  <div class="icon">
+                                      <span class="fas fa-envelope"></span>
+                                  </div>
+                                  <div class="text">
+                                      <p><a href="mailto:futurefarmers86@gmail.com">futurefarmers86@gmail.com</a></p>
+                                  </div>
+                              </li>
+                              <li>
+                                  <div class="icon">
+                                      <span class="icon-pin"></span>
+                                  </div>
+                                  <div class="text">
+                                      <p>Saravanampatti,COIMBATORE</p>
+                                  </div>
+                              </li>
+                          </ul>
+                          <form class="footer-widget__Contact-form">
+                              <div class="footer-widget__Contact-input-box">
+                                  <input type="email" placeholder="Email Address" name="email">
+                                  <button type="submit" class="footer-widget__Contact-btn"><i
+                                          class="icon-right-arrow"></i></button>
+                              </div>
+                          </form>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+  <div class="site-footer__bottom">
+      <div class="container">
+          <div class="row">
+              <div class="col-xl-12">
+                  <div class="site-footer__bottom-inner">
+                      <p class="site-footer__bottom-text">© Copyright 2022 by <a href="#">futurefarmers.com</a></p>
+                      <div class="site-footer__social">
+                          <a href="#"><i class="fab fa-twitter"></i></a>
+                          <a href="#"><i class="fab fa-facebook"></i></a>
+                          <a href="#"><i class="fab fa-pinterest-p"></i></a>
+                          <a href="#"><i class="fab fa-instagram"></i></a>
+                      </div>
+                      <div class="site-footer__bottom-scroll">
+                          <a href="#" data-target="html" class="scroll-to-target scroll-to-top"><i
+                                  class="icon-up-arrow"></i></a>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+</footer>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const landType = "<%= land.landType %>";
+        const soilType = "<%= land.soilType %>";
+
+        async function getSuggestions(landType, soilType) {
+            try {
+                const response = await fetch('/api/get-suggestions', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ landType, soilType }),
+                });
+                
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                
+                return await response.json();
+            } catch (error) {
+                console.error('Error:', error);
+                return {
+                    crops: "Unable to fetch recommendations at this time.",
+                    fertilizers: "Unable to fetch recommendations at this time."
+                };
+            }
+        }
+
+        // Update the suggestion content
+        getSuggestions(landType, soilType).then(suggestions => {
+            document.getElementById('cropSuggestions').textContent = suggestions.crops;
+            document.getElementById('fertilizerSuggestions').textContent = suggestions.fertilizers;
+        });
+    });
+</script></body>
+</html>

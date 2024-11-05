@@ -1,0 +1,663 @@
+<!-- land-posts.ejs -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title> Products Future Farmers </title>
+  <!-- favicons Icons -->
+
+  <!-- fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com/">
+
+  <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
+
+  <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&amp;display=swap"
+      rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Amatic+SC:wght@400;700&amp;display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="/vendors/bootstrap/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="/vendors/animate/animate.min.css" />
+  <link rel="stylesheet" href="/vendors/animate/custom-animate.css" />
+  <link rel="stylesheet" href="/vendors/fontawesome/css/all.min.css" />
+  <link rel="stylesheet" href="/vendors/jarallax/jarallax.css" />
+  <link rel="stylesheet" href="/vendors/jquery-magnific-popup/jquery.magnific-popup.css" />
+  <link rel="stylesheet" href="/vendors/nouislider/nouislider.min.css" />
+  <link rel="stylesheet" href="/vendors/nouislider/nouislider.pips.css" />
+  <link rel="stylesheet" href="/vendors/odometer/odometer.min.css" />
+  <link rel="stylesheet" href="/vendors/swiper/swiper.min.css" />
+  <link rel="stylesheet" href="/vendors/agrion-icons/style.css">
+  <link rel="stylesheet" href="/vendors/tiny-slider/tiny-slider.min.css" />
+  <link rel="stylesheet" href="/vendors/reey-font/stylesheet.css" />
+  <link rel="stylesheet" href="/vendors/owl-carousel/owl.carousel.min.css" />
+  <link rel="stylesheet" href="/vendors/owl-carousel/owl.theme.default.min.css" />
+  <link rel="stylesheet" href="/vendors/bxslider/jquery.bxslider.css" />
+  <link rel="stylesheet" href="/vendors/bootstrap-select/css/bootstrap-select.min.css" />
+  <link rel="stylesheet" href="/vendors/vegas/vegas.min.css" />
+  <link rel="stylesheet" href="/vendors/jquery-ui/jquery-ui.css" />
+  <link rel="stylesheet" href="/vendors/timepicker/timePicker.css" />
+  <link rel="stylesheet" href="/vendors/nice-select/nice-select.css" />
+  <link rel="stylesheet" href="/theme-css.css">
+
+
+  <!-- template styles -->
+  <link rel="stylesheet" href="/css/agrion.css" />
+  <link rel="stylesheet" href="/css/agrion-responsive.css" />
+  <link rel="stylesheet" href="/css/product.css">
+  <style>/* CSS for Page 1 (Add Land Information) */
+
+      body {
+          font-family: Arial, sans-serif;
+          margin: 0;
+          background-color: #f5f5f5;
+      }
+      
+      h1 {
+          text-align: center;
+        font-weight: bolder;
+      }
+      
+      form {
+          max-width: 600px;
+          margin: 0 auto;
+          background-color:var(--agrion-base);
+          padding: 20px;
+          border-radius: 5px;
+          color: #fff;
+          box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+          margin-block: 50px;
+      }
+      label {
+          font-weight: bold;
+      }
+      
+      input[type="file"],
+      input[type="number"],
+      input[type="tel"],
+      input[type="text"],
+      textarea,
+      select {
+          width: 100%;
+          padding: 10px;
+          margin: 5px 0;
+          border: 1px solid white;
+          border-radius: 3px;
+          font-size: 16px;
+      }
+      .submit{
+          margin-left: 40%;
+      }
+      select {
+          appearance: none;
+          -webkit-appearance: none;
+          -moz-appearance: none;
+          background-image: url("data:image/svg+xml;utf8,<svg fill='black' width='14' height='14' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'><polygon points='0,0 20,0 10,20'/></svg>");
+          background-size: 14px;
+          background-position: 95% 50%;
+          background-repeat: no-repeat;
+      }
+      
+      input[type="submit"] {
+          background-color: var(--agrion-primary);
+          color: #fff;
+          border: none;
+          border-radius: 5px;
+          padding: 10px 20px;
+          font-size: 18px;
+          cursor: pointer;
+      }
+      
+      input[type="submit"]:hover {
+          background-color: #0056b3;
+      }
+      </style>
+
+
+  <link rel="stylesheet" href="/css/lands.css">
+   <script>
+    // Function to delete a specific item from local storage
+    function deleteLandInfo(index) {
+        const landData = JSON.parse(localStorage.getItem('landData')) || [];
+        landData.splice(index, 1); // Remove the item at the specified index
+        localStorage.setItem('landData', JSON.stringify(landData)); // Update local storage
+        displayLandInfo(); // Refresh the displayed cards
+    }
+
+    // Function to create a card for displaying land information
+    function createLandCard(landInfo, index) {
+        const card = document.createElement('div');
+        card.classList.add('card');
+
+        // Create an image element for displaying images
+        const img = document.createElement('img');
+        img.src = landInfo.image; // Set the image source to the data URL
+        img.alt = 'Land Image';
+        img.style.maxWidth = '100%';
+        img.style.height = 'auto';
+
+        // Create a delete button for each card
+        const deleteButton = document.createElement('button');
+        deleteButton.textContent = 'Delete';
+        deleteButton.addEventListener('click', function () {
+            deleteLandInfo(index); // Call the deleteLandInfo function to delete the card
+        });
+
+        // Create paragraphs for other land information
+        const size = document.createElement('p');
+        size.textContent = `Size: ${landInfo.size} acres`;
+
+        const price = document.createElement('p');
+        price.textContent = `Lease Price: ${landInfo.price}`;
+
+        const ownerName = document.createElement('p');
+        ownerName.textContent = `Owner Name: ${landInfo.ownerName}`;
+
+        const phoneNumber = document.createElement('p');
+        phoneNumber.textContent = `Phone Number: ${landInfo.phoneNumber}`;
+
+        const address = document.createElement('p');
+        address.textContent = `Address: ${landInfo.address}`;
+
+        const landType = document.createElement('p');
+        landType.textContent = `Land Type: ${landInfo.landType}`;
+
+        const landDistrict = document.createElement('p');
+        landDistrict.textContent = `District: ${landInfo.district}`;
+
+        card.appendChild(img);
+        card.appendChild(size);
+        card.appendChild(price);
+        card.appendChild(ownerName);
+        card.appendChild(phoneNumber);
+        card.appendChild(address);
+        card.appendChild(landType);
+        card.appendChild(landDistrict);
+        card.appendChild(deleteButton); // Append the delete button to the card
+
+        // Append the card to the card container
+        const landCards = document.getElementById('landCards');
+        landCards.appendChild(card);
+    }
+
+    // Retrieve and display land information based on filters
+    function displayLandInfo() {
+        const districtFilter = document.getElementById('districtFilter').value;
+        const landTypeFilter = document.getElementById('landTypeFilter').value;
+        const landCards = document.getElementById('landCards');
+        landCards.innerHTML = '';
+
+        // Retrieve data from local storage
+        const landData = JSON.parse(localStorage.getItem('landData')) || [];
+
+        // Filter and display land information cards
+        landData.forEach(function (landInfo, index) {
+            if ((districtFilter === 'all' || landInfo.district === districtFilter) &&
+                (landTypeFilter === 'all' || landInfo.landType === landTypeFilter)) {
+                createLandCard(landInfo, index);
+            }
+        });
+    }
+
+    // Populate the filter options with data from local storage
+    function populateFilterOptions() {
+        const districtFilter = document.getElementById('districtFilter');
+        const landTypeFilter = document.getElementById('landTypeFilter');
+
+        // Retrieve data from local storage
+        const landData = JSON.parse(localStorage.getItem('landData')) || [];
+        const districts = new Set();
+        const landTypes = new Set();
+
+        landData.forEach(function (landInfo) {
+            districts.add(landInfo.district);
+            landTypes.add(landInfo.landType);
+        });
+
+        // Add filter options
+        districtFilter.innerHTML = '<option value="all">All Districts of Tamil Nadu</option>';
+        landTypeFilter.innerHTML = '<option value="all">All Land Types</option>';
+
+        districts.forEach(function (district) {
+            districtFilter.innerHTML += `<option value="${district}">${district}</option>`;
+        });
+
+        landTypes.forEach(function (landType) {
+            landTypeFilter.innerHTML += `<option value="${landType}">${landType}</option>`;
+        });
+    }
+
+    // Initialize filter options and display land information
+    populateFilterOptions();
+    displayLandInfo();
+
+    // Add event listeners for filters
+    document.getElementById('districtFilter').addEventListener('change', displayLandInfo);
+    document.getElementById('landTypeFilter').addEventListener('change', displayLandInfo);
+    //localStorage.clear(); 
+   
+</script>
+
+
+
+
+</head><body class="custom-cursor">
+
+
+
+
+  <!-- /.preloader -->
+
+
+  <div class="page-wrapper">
+      <header class="main-header">
+          <div class="main-header__wrapper">
+              <div class="main-header__wrapper-inner">
+                  <div class="main-header__logo">
+                      <a href="/home"><img src="/images/future_farmers-removebg-preview.png" style="height: 200px; width: 200px;" alt=""></a>
+                  </div>
+                  <div class="main-header__menu-box">
+                      <div class="main-header__menu-box-top">
+                          <ul class="list-unstyled main-header__contact-list">
+                              <li>
+                                  <div class="icon">
+                                      <i class="icon-email"></i>
+                                  </div>
+                                  <div class="text">
+                                      <p><a href="mailto:futurefarmers86@gmail.com">futurefarmers86@gmail.com</a></p>
+                                  </div>
+                              </li>
+                              <li>
+                                  <div class="icon">
+                                      <i class="icon-pin"></i>
+                                  </div>
+                                  <div class="text">
+                                      <p>Coimbatore,TAMILNADU</p>
+                                  </div>
+                              </li>
+                          </ul>
+                          <div class="main-header__social">
+                              <a href="#"><i class="fab fa-twitter"></i></a>
+                              <a href="#"><i class="fab fa-facebook"></i></a>
+                              <a href="#"><i class="fab fa-pinterest-p"></i></a>
+                              <a href="#"><i class="fab fa-instagram"></i></a>
+                          </div>
+                      </div>
+                      <div class="main-header__menu-box-bottom">
+                          <nav class="main-menu">
+                              <div class="main-menu__wrapper">
+                                  <div class="main-menu__wrapper-inner">
+                                      <div class="main-menu__left">
+                                          <div class="main-menu__main-menu-box">
+                                              <a href="#" class="mobile-nav__toggler"><i class="fa fa-bars"></i></a>
+                                              <ul class="main-menu__list">
+                                                  <li class="dropdown current megamenu">
+                                                      <a href="/home">Home </a>
+                                                      </li>
+                                                  <li>
+                                                      <a href="/post">Post a Query</a>
+                                                  </li>
+                                                  <li class="dropdown">
+                                                      <a href="/posts">View Posts</a>
+                                                   </li>
+                                                   <li class="dropdown">
+                                                      <a href="/land">Post Lands</a>
+                                                   </li>
+                                                  <li class="dropdown">
+                                                      <a href="/land-posts">View Lands</a>
+                                                  </li>
+                                                  
+                                              </ul>
+                                          </div>
+                                      </div>
+                                      
+                                  </div>
+                              </div>
+                          </nav>
+                      </div>
+                  </div>
+                  <div class="main-header__phone-contact-box">
+                      <div class="main-header__phone-number">
+                          <a href="tel:+918610175112">+918610175112</a>
+                      </div>
+                      <div class="main-header__call-box">
+                          <div class="main-header__call-inner">
+                              <div class="main-header__call-icon">
+                                  <span class="fas fa-phone"></span>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </header>
+
+      <div class="stricky-header stricked-menu main-menu">
+          <div class="sticky-header__content"></div><!-- /.sticky-header__content -->
+      </div><!-- /.stricky-header -->
+
+      <!--Page Header Start-->
+      <section class="page-header">
+          <div class="page-header-bg">
+          </div>
+          <div class="container">
+              <div class="page-header__inner">
+                  <ul class="thm-breadcrumb list-unstyled">
+                      <li><a href="/home">Home</a></li>
+                      <li><span>/</span></li>
+                      <li>Community</li>
+                  </ul>
+                  <h2>WELCOME<br/><span>Future Farmers Community</span></h2>
+              </div>
+          </div>
+      </section>
+      <!--Page Header End-->
+
+  <h1>Land Details</h1>
+
+ <!-- 
+     <div class="ocontainer">
+    <div class="containerin1">
+<label for="districtFilter">Filter by District:</label>
+<select id="districtFilter">
+    <option value="all">All Districts of Tamil Nadu</option>
+    <option value="all">All Districts of Tamil Nadu</option>
+        <option value="Coimbatore">Coimbatore</option>
+        <option value="chennai">Chennai</option>
+        <option value="district2">Theni</option>
+        <option value="Thanjavur">Thanjavur</option>
+        <option value="Mailadudhurai">Mailadudhurai</option>
+ -->
+</select>
+</div>
+<div class="containerin1">
+<label for="landTypeFilter">Filter by Land Type:</label>
+<select id="landTypeFilter">
+    <!-- Populate with land types from local storage data -->
+</select>
+</div>
+</div>
+
+<div class="psts">
+  <% if (allLandDetails.length === 0) { %>
+    <p>No land details available</p>
+  <% } else { %>
+    <ul>
+      <% allLandDetails.forEach(land => { %>
+        <li>
+          <h3 class="postby">Posted By</h3>
+          <% if (land.user && land.user.name) { %>
+            <p class="username"><%= land.user.name.toUpperCase() %></p>
+          <% } else { %>
+            <p>Unknown User</p>
+          <% } %>
+
+          <img class="img1" src="/land/<%= land._id %>/image" alt="Land Image">
+    
+
+          <h3>Size (in acres):</h3>
+          <p><%= land.size %></p>
+
+          <h3>Lease Price:</h3>
+          <p><%= land.leasePrice %></p>
+          <h3>Irrigation Facilities:</h3>
+
+         <p><%= land.irrigationFacilities %></p> 
+         <h3>Soil Type:</h3>
+
+         <p><%= land.soilType %></p> <!-- Display the new field -->
+
+          <h3>Owner Name:</h3>
+          <p><%= land.ownerName %></p>
+
+          <h3>Phone Number:</h3>
+          <p><%= land.phoneNumber %></p>
+
+          <h3>Address:</h3>
+          <p><%= land.address %></p>
+
+          <h3>Land Type:</h3>
+          <p><%= land.landType %></p>
+
+          <h3>District:</h3>
+          <p><%= land.district %></p>
+          <a href="/land-details/<%= land._id %>" class="view-btn">View Details</a>
+        </li>
+ 
+      <% }); %>
+    </ul>
+  <% } %>
+</div>
+
+</body>
+</html>
+<!--Site Footer Start-->
+<footer class="site-footer">
+  <div class="site-footer__top">
+      <div class="container">
+          <div class="site-footer__top-inner">
+              <div class="site-footer-shape-1 float-bob-x"
+                  style="background-image: url(assets/images/shapes/site-footer-shape-1.png);"></div>
+              <div class="row">
+                  <div class="col-xl-3 col-lg-6 col-md-6 wow fadeInUp" data-wow-delay="100ms">
+                      <div class="footer-widget__column footer-widget__about">
+                          <div class="footer-widget__logo">
+                              <a href="/home"><img src="/images/future_farmers-removebg-preview.png"style="height: 200px; width: 200px; background-color:white;border-radius:100px"
+                                      alt=""></a>
+                          </div>
+                          <div class="footer-widget__about-text-box">
+                              <p class="footer-widget__about-text">Here at future farmers,we see the value in everyone.</p>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="col-xl-2 col-lg-6 col-md-6 wow fadeInUp" data-wow-delay="200ms">
+                      <div class="footer-widget__column footer-widget__Explore">
+                          <div class="footer-widget__title-box">
+                              <h3 class="footer-widget__title">Explore</h3>
+                          </div>
+                          <ul class="footer-widget__Explore-list list-unstyled">
+                              <li><a href="/home">Home</a></li>
+                              <li><a href="/post">Post a Querry</a></li>
+                              <li><a href="/posts">View Posts</a></li>
+                              <li><a href="/land">Post Lands</a></li>
+                              <li><a href="/land-posts"> View Lands</a></li>
+                          </ul>
+                      </div>
+                  </div>
+                  <div class="col-xl-3 col-lg-6 col-md-6 wow fadeInUp" data-wow-delay="300ms">
+                      <div class="footer-widget__column footer-widget__news">
+                          <div class="footer-widget__title-box">
+                              <h3 class="footer-widget__title">News</h3>
+                          </div>
+                          <ul class="footer-widget__news-list list-unstyled">
+                              <li>
+                                  <div class="footer-widget__news-img">
+                                      <img src="assets/images/resources/footer-widget-news-img-1.jpg" alt="">
+                                  </div>
+                                  <div class="footer-widget__news-content">
+                                      <p class="footer-widget__news-date">01 Nov,2023</p>
+                                      <h5 class="footer-widget__news-sub-title"><a href="blog-details.html">A
+                                              Organic Food
+                                              Gives
+                                              More Good Taste</a></h5>
+                                  </div>
+                              </li>
+                              <li>
+                                  <div class="footer-widget__news-img">
+                                      <img src="assets/images/resources/footer-widget-news-img-2.jpg" alt="">
+                                  </div>
+                                  <div class="footer-widget__news-content">
+                                      <p class="footer-widget__news-date">03 Nov,2023</p>
+                                      <h5 class="footer-widget__news-sub-title"><a href="blog-details.html">A
+                                              Organic Food
+                                              Gives
+                                              More Good Taste</a></h5>
+                                  </div>
+                              </li>
+                          </ul>
+                      </div>
+                  </div>
+                  <div class="col-xl-4 col-lg-6 col-md-6 wow fadeInUp" data-wow-delay="400ms">
+                      <div class="footer-widget__column footer-widget__Contact">
+                          <div class="footer-widget__title-box">
+                              <h3 class="footer-widget__title">Contact</h3>
+                          </div>
+                          <ul class="footer-widget__Contact-list list-unstyled">
+                              <li>
+                                  <div class="icon">
+                                      <span class="fas fa-phone-square-alt"></span>
+                                  </div>
+                                  <div class="text">
+                                      <p><a href="tel:+918610175112">+918610175112</a></p>
+                                  </div>
+                              </li>
+                              <li>
+                                  <div class="icon">
+                                      <span class="fas fa-envelope"></span>
+                                  </div>
+                                  <div class="text">
+                                      <p><a href="mailto:futurefarmers86@gmail.com">futurefarmers86@gmail.com</a></p>
+                                  </div>
+                              </li>
+                              <li>
+                                  <div class="icon">
+                                      <span class="icon-pin"></span>
+                                  </div>
+                                  <div class="text">
+                                      <p>Saravanampatti,COIMBATORE</p>
+                                  </div>
+                              </li>
+                          </ul>
+                          <form class="footer-widget__Contact-form">
+                              <div class="footer-widget__Contact-input-box">
+                                  <input type="email" placeholder="Email Address" name="email">
+                                  <button type="submit" class="footer-widget__Contact-btn"><i
+                                          class="icon-right-arrow"></i></button>
+                              </div>
+                          </form>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+  <div class="site-footer__bottom">
+      <div class="container">
+          <div class="row">
+              <div class="col-xl-12">
+                  <div class="site-footer__bottom-inner">
+                      <p class="site-footer__bottom-text">© Copyright 2022 by <a href="#">futurefarmers.com</a></p>
+                      <div class="site-footer__social">
+                          <a href="#"><i class="fab fa-twitter"></i></a>
+                          <a href="#"><i class="fab fa-facebook"></i></a>
+                          <a href="#"><i class="fab fa-pinterest-p"></i></a>
+                          <a href="#"><i class="fab fa-instagram"></i></a>
+                      </div>
+                      <div class="site-footer__bottom-scroll">
+                          <a href="#" data-target="html" class="scroll-to-target scroll-to-top"><i
+                                  class="icon-up-arrow"></i></a>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+</footer>
+<!--Site Footer End-->
+
+
+</div><!-- /.page-wrapper -->
+
+
+<div class="mobile-nav__wrapper">
+<div class="mobile-nav__overlay mobile-nav__toggler"></div>
+<!-- /.mobile-nav__overlay -->
+<div class="mobile-nav__content">
+  <span class="mobile-nav__close mobile-nav__toggler"><i class="fa fa-times"></i></span>
+
+  <div class="logo-box">
+      <a href="index.html" aria-label="logo image"><img src="assets/new-images-ff/future_farmers-removebg-preview.png" width="122"
+              alt="" /></a>
+  </div>
+  <!-- /.logo-box -->
+  <div class="mobile-nav__container"></div>
+  <!-- /.mobile-nav__container -->
+
+  <ul class="mobile-nav__contact list-unstyled">
+      <li>
+          <i class="fa fa-envelope"></i>
+          <a href="mailto:futurefarmers86@gmail.com">futurefarmers86@gmail.com</a>
+      </li>
+      <li>
+          <i class="fa fa-phone-alt"></i>
+          <a href="tel:+918610175112">+918610175112</a>
+      </li>
+  </ul><!-- /.mobile-nav__contact -->
+  <div class="mobile-nav__top">
+      <div class="mobile-nav__social">
+          <a href="#" class="fab fa-twitter"></a>
+          <a href="#" class="fab fa-facebook-square"></a>
+          <a href="#" class="fab fa-pinterest-p"></a>
+          <a href="#" class="fab fa-instagram"></a>
+      </div><!-- /.mobile-nav__social -->
+  </div><!-- /.mobile-nav__top -->
+
+
+
+</div>
+<!-- /.mobile-nav__content -->
+</div>
+<!-- /.mobile-nav__wrapper -->
+
+<div class="search-popup">
+<div class="search-popup__overlay search-toggler"></div>
+<!-- /.search-popup__overlay -->
+<div class="search-popup__content">
+  <form action="#">
+      <label for="search" class="sr-only">search here</label><!-- /.sr-only -->
+      <input type="text" id="search" placeholder="Search Here..." />
+      <button type="submit" aria-label="search submit" class="thm-btn">
+          <i class="icon-magnifying-glass"></i>
+      </button>
+  </form>
+</div>
+<!-- /.search-popup__content -->
+</div>
+<!-- /.search-popup -->
+
+
+
+<script src="assets/vendors/jquery/jquery-3.6.0.min.js"></script>
+<script src="assets/vendors/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="assets/vendors/jarallax/jarallax.min.js"></script>
+<script src="assets/vendors/jquery-ajaxchimp/jquery.ajaxchimp.min.js"></script>
+<script src="assets/vendors/jquery-appear/jquery.appear.min.js"></script>
+<script src="assets/vendors/jquery-circle-progress/jquery.circle-progress.min.js"></script>
+<script src="assets/vendors/jquery-magnific-popup/jquery.magnific-popup.min.js"></script>
+<script src="assets/vendors/jquery-validate/jquery.validate.min.js"></script>
+<script src="assets/vendors/nouislider/nouislider.min.js"></script>
+<script src="assets/vendors/odometer/odometer.min.js"></script>
+<script src="assets/vendors/swiper/swiper.min.js"></script>
+<script src="assets/vendors/tiny-slider/tiny-slider.min.js"></script>
+<script src="assets/vendors/wnumb/wNumb.min.js"></script>
+<script src="assets/vendors/wow/wow.js"></script>
+<script src="assets/vendors/isotope/isotope.js"></script>
+<script src="assets/vendors/countdown/countdown.min.js"></script>
+<script src="assets/vendors/owl-carousel/owl.carousel.min.js"></script>
+<script src="assets/vendors/bxslider/jquery.bxslider.min.js"></script>
+<script src="assets/vendors/bootstrap-select/js/bootstrap-select.min.js"></script>
+<script src="assets/vendors/vegas/vegas.min.js"></script>
+<script src="assets/vendors/jquery-ui/jquery-ui.js"></script>
+<script src="assets/vendors/timepicker/timePicker.js"></script>
+<script src="assets/vendors/circleType/jquery.circleType.js"></script>
+<script src="assets/vendors/circleType/jquery.lettering.min.js"></script>
+
+
+
+
+<!-- template js -->
+<script src="assets/js/agrion.js"></script>
+</body>
+
+
+</html>

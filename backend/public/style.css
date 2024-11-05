@@ -1,0 +1,101 @@
+:root {
+  --agrion-font: 'DM Sans', sans-serif;
+  --agrion-font-two: 'Amatic SC', cursive;
+  --agrion-reey-font: "reeyregular";
+  --agrion-gray: #757873;
+  --agrion-gray-rgb: 117, 120, 115;
+  --agrion-white: #ffffff;
+  --agrion-white-rgb: 255, 255, 255;
+  --agrion-base: #1f6306;
+  --agrion-base-rgb: 31, 99, 6;
+  --agrion-black: #0e2207;
+  --agrion-black-rgb: 14, 34, 7;
+  --agrion-primary: #ffcd1e;
+  --agrion-primary-rgb: 255, 205, 30;
+  --agrion-extra: #f8f6f1;
+  --agrion-extra-rgb: 248, 246, 241;
+  --agrion-bdr-radius: 10px;
+
+}
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body{
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+h2{
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.form-container{
+  width: 300px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: var(--agrion-base);;
+  border: 1px solid black;
+  border-radius: 5px;
+  color: white;
+}
+
+.form-group{
+  margin-bottom: 15px;
+}
+
+.form-group label{
+  display: block;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.form-group input{
+  width: 100%;
+  padding: 8px;
+  font-size:16px ;
+  border: 1px solid #ccc;
+  border-radius: 3px
+}
+ 
+.submit-btn{
+  display: block;
+  width: 100%;
+  padding: 10px;
+  background-color: var( --agrion-primary);;
+  color: black;
+  border:    1px solid black;
+  border-radius: 5px;
+  cursor: pointer;
+  text-align: center;
+}
+
+.submit-btn:hover{
+  background-color: #0e2207;
+  color: white;
+}
+
+p{
+  margin-top: 20px;
+  text-align: center;
+}
+
+a{
+  display:  inline-block;
+  text-decoration: none;
+  text-align: center;
+  border:    1px solid black;
+  background-color: #ffcd1e;
+padding: 5px;
+border-radius: 10px;
+margin-top: 10px;
+}
+a:hover{
+  background-color: #0e2207;
+  color: white;
+}

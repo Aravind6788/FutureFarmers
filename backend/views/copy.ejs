@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Community</title>
+  <link rel="stylesheet" href="/style.css">
+  <style>
+  body {
+    display: flex;
+    flex-direction: column;
+    background-color: rgb(0, 0, 0);
+    text-align: center;
+    margin: 0; /* Remove default body margin */
+    padding: 0; /* Remove default body padding */
+  }
+
+  h1 {
+    color: aliceblue;
+    margin-top: 20px; /* Add some top margin */
+  }
+
+  div {
+    background-color: #05ff6d;
+    width: 60%;
+    margin: 40px auto;
+    overflow-y: auto;
+    border: 1px solid #4d4d4d;
+    padding: 10px;
+    text-align: left;
+    height: 800px;
+    position: relative;
+  }
+
+  ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  li {
+    position: relative;
+    text-decoration: none;
+    margin: 20px 0; /* Space between each list item */
+    display: flex;
+    align-items: center;
+  }
+
+  .username-style{
+    top: 8px;
+    left: 30px;
+    position: absolute;
+    font-size: 15px;
+    font-weight: bold;
+    font-family: 'Franklin Gothic Medium';
+  }
+
+  .post-data-style {
+    margin:10px 0 0 10px ;
+    color: rgb(255, 255, 255); 
+    font-size: 18px;
+  }
+
+  /* Style for the return home link */
+  a.return-home {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    text-decoration: none;
+    color: crimson;
+  }
+  </style>
+
+<script>
+
+  document.addEventListener('DOMContentLoaded', function () {
+    const allPosts = document.querySelectorAll('li[data-user]');
+    //bgcolor
+    allPosts.forEach((post, index) => {
+    post.style.backgroundColor = '#252525';
+    post.style.borderRadius = '35px';
+    post.style.padding = "20px";
+    });
+
+    allPosts.forEach(post => {
+      const username = post.getAttribute('data-user');
+      const usernameColor = getRandomColor(username);
+
+      // Apply color to the username
+      post.querySelector('strong').style.color = usernameColor;
+    });
+
+    function getRandomColor(seed) {
+      const hash = hashCode(seed);
+      const hue = Math.abs(hash % 360);
+      return `hsl(${hue}, 50%, 50%)`; // Use HSL color with a unique hue for each user
+    }
+
+    // Helper function to generate a hash code
+    function hashCode(str) {
+      let hash = 0;
+      for (let i = 0; i < str.length; i++) {
+        const char = str.charCodeAt(i);
+        hash = (hash << 5) - hash + char;
+      }
+      return hash;
+    }
+  });
+</script>
+
+
+</head>
+<body>
+
+  <h1>QUERIES</h1>
+  <div>
+    <% if (allPosts.length > 0) { %>
+      <ul>
+        <% allPosts.forEach(post => { %>
+          <li data-user="<%= post.user %>">
+            <strong class="username-style"><%= post.user.toUpperCase() %>:</strong> <span class="post-data-style"><%= post.data %></span>
+                <!-- Display comments -->
+                <% if (post.comments && post.comments.length > 0) { %>
+                  <ul>
+                    <% post.comments.forEach(comment => { %>
+                      <li>
+                        <strong><%= comment.user ? comment.user.toUpperCase() : 'Unknown User' %>:</strong> <%= comment.comment %>
+                      </li>
+                    <% }); %>                    
+                  </ul>
+                <% } %>
+
+                <form action="/post/<%= post._id %>/comment" method="post">
+                  <div class="form-group">
+                    <label for="comment">Add Comment:</label>
+                    <input type="text" id="comment" name="comment" placeholder="Enter your comment" required>
+                  </div>
+                  <button type="submit" class="submit-btn">Comment</button>
+                </form>
+          </li>
+        <% }); %>
+      </ul>
+    <% } else { %>
+      <p>No posts available.</p>
+    <% } %>
+
+    <!-- Add a link to return to the home page with the return-home class -->
+    
+  </div>
+  <a href="/home" class="return-home">Return to Home</a>
+</body>
+</html>
