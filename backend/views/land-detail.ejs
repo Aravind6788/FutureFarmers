@@ -34,6 +34,16 @@
     <link rel="stylesheet" href="/css/agrion-responsive.css" />
 
     <style>
+        .spinner-border {
+    width: 1.5rem;
+    height: 1.5rem;
+    border-width: 0.2em;
+}
+
+.suggestion-card p {
+    min-height: 100px;
+    white-space: pre-line;
+}
         .suggestion-section {
     background-color: #e6f7ff;
     padding: 25px;
@@ -423,9 +433,14 @@
     document.addEventListener('DOMContentLoaded', function() {
         const landType = "<%= land.landType %>";
         const soilType = "<%= land.soilType %>";
+        const cropSuggestions = document.getElementById('cropSuggestions');
+        const fertilizerSuggestions = document.getElementById('fertilizerSuggestions');
 
         async function getSuggestions(landType, soilType) {
             try {
+                cropSuggestions.innerHTML = '<div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading...</span></div>';
+                fertilizerSuggestions.innerHTML = '<div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading...</span></div>';
+
                 const response = await fetch('/api/get-suggestions', {
                     method: 'POST',
                     headers: {
@@ -438,21 +453,28 @@
                     throw new Error('Network response was not ok');
                 }
                 
-                return await response.json();
+                const data = await response.json();
+                return data;
             } catch (error) {
                 console.error('Error:', error);
                 return {
-                    crops: "Unable to fetch recommendations at this time.",
-                    fertilizers: "Unable to fetch recommendations at this time."
+                    crops: "Unable to fetch recommendations at this time. Please try again later.",
+                    fertilizers: "Unable to fetch recommendations at this time. Please try again later."
                 };
             }
         }
 
         // Update the suggestion content
         getSuggestions(landType, soilType).then(suggestions => {
-            document.getElementById('cropSuggestions').textContent = suggestions.crops;
-            document.getElementById('fertilizerSuggestions').textContent = suggestions.fertilizers;
+            // Convert line breaks to HTML breaks for better formatting
+            cropSuggestions.innerHTML = suggestions.crops.replace(/\n/g, '<br>');
+            fertilizerSuggestions.innerHTML = suggestions.fertilizers.replace(/\n/g, '<br>');
+        }).catch(error => {
+            cropSuggestions.textContent = "Error loading suggestions";
+            fertilizerSuggestions.textContent = "Error loading suggestions";
+            console.error('Error:', error);
         });
     });
-</script></body>
+</script>
+</body>
 </html>
