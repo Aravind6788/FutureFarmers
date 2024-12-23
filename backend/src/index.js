@@ -175,6 +175,29 @@ app.get('/posts', async (req, res) => {
     res.status(500).send('Error during posts retrieval');
   }
 });
+app.post("/post/:postId/comment", async (req, res) => {
+  try {
+    const loggedInUser = req.session.username;
+    const postId = req.params.postId;
+
+    const commentData = {
+      user: loggedInUser,
+      comment: req.body.comment,
+    };
+
+    const updatedPost = await Post.findByIdAndUpdate(
+      postId,
+      { $push: { comments: commentData } },
+      { new: true }
+    );
+
+    // Return the new comment
+    res.json(commentData);
+  } catch (error) {
+    console.error("Comment data error:", error);
+    res.status(500).send("Error during comment posting");
+  }
+});
 
 //lands
 app.get('/land', (req, res) => {

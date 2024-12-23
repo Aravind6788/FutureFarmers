@@ -266,38 +266,84 @@
       <ul>
         <% allPosts.forEach(post => { %>
             
-          <li  class="comment" data-user="<%= post.user %>">
-            <div class="chat-header">
-            <strong class="username-style"><%= post.user.toUpperCase() %>:</strong> <span class="post-data-style"><%= post.data %></span>
-            <button class="comments">Comments</button>
-            </div>
-           
-            <div class="">
-                <!-- Display comments -->
-                <% if (post.comments && post.comments.length > 0) { %>
-                  <ul class="chat-window">
-                    
-                    <% post.comments.forEach(comment => { %>
-                      <li class="message-list" >
+          <li class="comment" data-user="<%= post.user %>" data-post-id="<%= post._id %>">
+    <div class="chat-header">
+        <strong class="username-style"><%= post.user.toUpperCase() %>:</strong> 
+        <span class="post-data-style"><%= post.data %></span>
+        <button class="comments">Comments</button>
+    </div>
+    
+    <div class="comment-section" style="display: none;">
+        <ul class="chat-window">
+            <% if (post.comments && post.comments.length > 0) { %>
+                <% post.comments.forEach(comment => { %>
+                    <li class="message-list">
                         <strong><%= comment.user ? comment.user.toUpperCase() : 'Unknown User' %>:</strong> <%= comment.comment %>
-                      </li>
-                    <% }); %>
-                                     
-                  </ul>
-                <% } %>
-                
-            </div>
-            <div class="chat-input">
-                <input type="text" class="message-input" placeholder="Type your message here">
-                <button class="send-button">Send</button>
-            </div>   
-          </li>
+                    </li>
+                <% }); %>
+            <% } %>
+        </ul>
+        <form class="chat-input" onsubmit="return false;"> <!-- Prevent default form submission -->
+            <input type="text" class="message-input" placeholder="Type your message here" required>
+            <button type="submit" class="send-button">Send</button>
+        </form>
+    </div>
+</li>
+
         <% }); %>
       </ul>
     <% } else { %>
       <p>No posts available.</p>
     <% } %>
+<script>document.addEventListener('DOMContentLoaded', function () {
+    const allPosts = document.querySelectorAll('li[data-user]');
 
+    allPosts.forEach(post => {
+        const commentsButton = post.querySelector('.comments');
+        const commentSection = post.querySelector('.comment-section');
+        const sendButton = post.querySelector('.send-button');
+        const messageInput = post.querySelector('.message-input');
+        const form = post.querySelector('.chat-input');
+
+        // Show/Hide comment section
+        commentsButton.addEventListener('click', () => {
+            commentSection.style.display = commentSection.style.display === 'none' ? 'block' : 'none';
+        });
+
+        // Add comment on form submission
+        form.addEventListener('submit', async (event) => {
+            event.preventDefault(); // Prevent the default form submission
+
+            const commentText = messageInput.value.trim();
+            if (commentText) {
+                const postId = post.getAttribute('data-post-id'); // Ensure you have a data attribute for post ID
+
+                try {
+                    const response = await fetch(`/post/${postId}/comment`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ comment: commentText }),
+                    });
+
+                    if (response.ok) {
+                        const newComment = await response.json(); // Assuming the server returns the new comment
+                        const newCommentElement = document.createElement('li');
+                        newCommentElement.classList.add('message-list');
+                        newCommentElement.innerHTML = `<strong>${newComment.user.toUpperCase()}:</strong> ${newComment.comment}`;
+                        post.querySelector('.chat-window').appendChild(newCommentElement);
+                        messageInput.value = ''; // Clear the input
+                    } else {
+                        console.error('Failed to add comment');
+                    }
+                } catch (error) {
+                    console.error('Error adding comment:', error);
+                }
+            }
+        });
+    });
+});</script>
     <!-- Add a link to return to the home page with the return-home class -->
 </div>
   </div>
